@@ -293,11 +293,11 @@ async function run(){
         // console.log(`content :${content}`);
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
-        let hasConfilct = await compareDependecies(foundDependency);
-        console.log('Test11 : ', hasConfilct);
+        const conflictedDepencies = await compareDependecies(foundDependency);
+        console.log('Test11 : ', conflictedDepencies.size);
 
-        if(hasConfilct){
-            core.setFailed('Build Script conflict  ');
+        if(conflictedDepencies.size > 0){
+            core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
         }
 
         console.log(`Exit Code : ${exitCode}`);
@@ -342,13 +342,11 @@ async function compareDependecies(foundDependency){
             const conflictedDepencies = new Set();
             Array.from(foundDependency).every(value => {
                     if(!requiredDependencies.has(value)){
-                        conflictedDepencies.add(value);
-                        resolve (false);
-                    }
-                    resolve (true);
+                        conflictedDepencies.add(value);                        
+                    }                    
             });        
-        });
-            
+            resolve(conflictedDepencies);
+        });                
 }
 
 function findDependencies(content){
