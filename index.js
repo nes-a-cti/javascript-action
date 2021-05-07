@@ -67,12 +67,12 @@ async function run(){
         cmdOpts.ignoreReturnCode = true;
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;        
-        const content = await readDependenciesFile();
-        console.log(`content :${content}`);
-        // const foundDependency = findDependencies(data);
-        // console.log(`2foundDependency : ${foundDependency.size}`);
-        // let hasConfilct = await compareDependecies(foundDependency);
-        console.log('Test11 : ');
+        // const content = await readDependenciesFile();
+        // console.log(`content :${content}`);
+        const foundDependency = findDependencies(data);
+        console.log(`2foundDependency : ${foundDependency.size}`);
+        let hasConfilct = await compareDependecies(foundDependency);
+        console.log('Test11 : ', hasConfilct);
 
         console.log(`Exit Code : ${exitCode}`);
 
@@ -108,38 +108,38 @@ function constructRequiredDependencies(data){
     return dependencies;
 }
 
-// async function compareDependecies(foundDependency){    
-//         let requiredDependencies = await readDependenciesFile();
+async function compareDependecies(foundDependency){    
+        let requiredDependencies = await readDependenciesFile();
         
-//         console.log(`1foundDependency : ${foundDependency.size}`);
-//         console.log(`requiredDependencies : ${requiredDependencies.size}`);
-//         const conflictedDepencies = new Set();
-//         Array.from(foundDependency).every(value => {
-//                 if(!requiredDependencies.has(value)){
-//                     conflictedDepencies.add(value);
-//                     return (false);
-//                 }
-//                 return (true);
-//         });        
+        console.log(`1foundDependency : ${foundDependency.size}`);
+        console.log(`requiredDependencies : ${requiredDependencies.size}`);
+        const conflictedDepencies = new Set();
+        Array.from(foundDependency).every(value => {
+                if(!requiredDependencies.has(value)){
+                    conflictedDepencies.add(value);
+                    return (false);
+                }
+                return (true);
+        });        
             
-// }
+}
 
-// function findDependencies(content){
-//     let lines = content.split('\n');
-//     let dependencies = new Set();
+function findDependencies(content){
+    let lines = content.split('\n');
+    let dependencies = new Set();
 
-//     for(index in lines){
+    for(index in lines){
         
-//         if(lines[index].includes('--- ')){
-//             let ln = lines[index].trim();
-//             ln = ln.substring(ln.indexOf('--- ')+4);
-//             ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
-//             dependencies.add(ln);
-//         }
-//     }    
+        if(lines[index].includes('--- ')){
+            let ln = lines[index].trim();
+            ln = ln.substring(ln.indexOf('--- ')+4);
+            ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
+            dependencies.add(ln);
+        }
+    }    
 
-//     return dependencies;
-// }
+    return dependencies;
+}
 
 module.exports = {run}
 
