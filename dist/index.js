@@ -292,7 +292,7 @@ async function run(){
 
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
-        compareDependecies(foundDependency);
+        await compareDependecies(foundDependency);
         console.log('Test14');
 
         console.log(`Exit Code : ${exitCode}`);
