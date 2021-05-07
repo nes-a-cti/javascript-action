@@ -21,6 +21,7 @@ const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
 const { Storage } = require('@google-cloud/storage');
+const { resolve } = require('./dist');
 const storage = new Storage();
 
 const source = ".";
@@ -84,8 +85,7 @@ async function run(){
 }
 
 async function readDependenciesFile(){
-        return new Promise((resolve, reject) => {
-            let dependencies = new Set();
+        return new Promise((resolve, reject) => {            
             const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
             let buf = '';
     
@@ -111,17 +111,19 @@ function constructRequiredDependencies(data){
 }
 
 async function compareDependecies(foundDependency){
-    let requiredDependencies = await readDependenciesFile();
-    console.log(`1foundDependency : ${foundDependency.size}`);
-    console.log(`requiredDependencies : ${requiredDependencies.size}`);
-    const conflictedDepencies = new Set();
-    Array.from(foundDependency).every(value => {
-            if(!requiredDependencies.has(value)){
-                conflictedDepencies.add(value);
-                return false;
-            }
-            return true;
-    });
+    return new Promise(async resolve => {
+        let requiredDependencies = await readDependenciesFile();
+        console.log(`1foundDependency : ${foundDependency.size}`);
+        console.log(`requiredDependencies : ${requiredDependencies.size}`);
+        const conflictedDepencies = new Set();
+        Array.from(foundDependency).every(value => {
+                if(!requiredDependencies.has(value)){
+                    conflictedDepencies.add(value);
+                    resolve(false);
+                }
+                resolve(true);
+        });
+    })    
 }
 
 function findDependencies(content){
