@@ -67,7 +67,8 @@ async function run(){
         cmdOpts.ignoreReturnCode = true;
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;        
-        await readDependenciesFile();
+        const content = await readDependenciesFile();
+        console.log(`content :${content}`);
         // const foundDependency = findDependencies(data);
         // console.log(`2foundDependency : ${foundDependency.size}`);
         // let hasConfilct = await compareDependecies(foundDependency);
