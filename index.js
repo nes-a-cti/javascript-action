@@ -20,6 +20,9 @@
 const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
+const Storage = require('@google-cloud/storage');
+const storage = Storage();
+
 const source = ".";
 
 const requiredDependencies = new Set();
@@ -35,26 +38,42 @@ requiredDependencies.add('org.hamcrest:hamcrest-core:1.3');
 
 async function run(){
     try{
-        let cmdOut = "";
-        let cmdArgs = [];
-        let command = './gradlew dependencies';
-        // let command = 'pwd';
-        const cmdOpts = {};
-        cmdOpts.listeners = {
-            stdout : (data = Buffer) => {
-                cmdOut += data.toString();
-            }
-        }
-        cmdOpts.ignoreReturnCode = true;
-        let exitCode = await exec(command, cmdArgs, cmdOpts);
-        let data = cmdOut;        
 
-        const foundDependency = findDependencies(data);
-        console.log(`2foundDependency : ${foundDependency.size}`);
-        compareDependecies(foundDependency);
-        console.log('Test14');
+        console.log('File Read Start');
 
-        console.log(`Exit Code : ${exitCode}`);
+        const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createStream();
+
+        console.log('Stream Created.');
+
+        let buf = '';
+
+        fileStream.on('data', data => {
+            buf += data;
+        }).on('end', () => {
+            console.log('Data completed.');
+        });
+        // let cmdOut = "";
+        // let cmdArgs = [];
+        // let command = './gradlew dependencies';
+        // // let command = 'pwd';
+        // const cmdOpts = {};
+        // cmdOpts.listeners = {
+        //     stdout : (data = Buffer) => {
+        //         cmdOut += data.toString();
+        //     }
+        // }
+        // cmdOpts.ignoreReturnCode = true;
+        // let exitCode = await exec(command, cmdArgs, cmdOpts);
+        // let data = cmdOut;        
+
+        // const foundDependency = findDependencies(data);
+        // console.log(`2foundDependency : ${foundDependency.size}`);
+        // compareDependecies(foundDependency);
+        // console.log('Test14');
+
+        // console.log(`Exit Code : ${exitCode}`);
+
+
 
     }catch(error){
         core.setFailed(error.message);
