@@ -76,8 +76,6 @@ async function run(){
 
         console.log(`Exit Code : ${exitCode}`);
 
-
-
     }catch(error){
         core.setFailed(error.message);
     }
@@ -110,20 +108,21 @@ function constructRequiredDependencies(data){
     return dependencies;
 }
 
-async function compareDependecies(foundDependency){
-    return new Promise(async resolve => {
+async function compareDependecies(foundDependency){    
         let requiredDependencies = await readDependenciesFile();
-        console.log(`1foundDependency : ${foundDependency.size}`);
-        console.log(`requiredDependencies : ${requiredDependencies.size}`);
-        const conflictedDepencies = new Set();
-        Array.from(foundDependency).every(value => {
-                if(!requiredDependencies.has(value)){
-                    conflictedDepencies.add(value);
-                    resolve(false);
-                }
-                resolve(true);
-        });
-    })    
+        return new Promise(resolve => {
+            console.log(`1foundDependency : ${foundDependency.size}`);
+            console.log(`requiredDependencies : ${requiredDependencies.size}`);
+            const conflictedDepencies = new Set();
+            Array.from(foundDependency).every(value => {
+                    if(!requiredDependencies.has(value)){
+                        conflictedDepencies.add(value);
+                        resolve(false);
+                    }
+                    resolve(true);
+            });
+        })
+            
 }
 
 function findDependencies(content){
