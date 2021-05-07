@@ -296,6 +296,10 @@ async function run(){
         let hasConfilct = await compareDependecies(foundDependency);
         console.log('Test11 : ', hasConfilct);
 
+        if(hasConfilct){
+            core.setFailed('Build Script conflict  ');
+        }
+
         console.log(`Exit Code : ${exitCode}`);
 
     }catch(error){
