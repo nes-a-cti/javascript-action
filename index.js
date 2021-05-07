@@ -63,7 +63,9 @@ function findDependencies(content){
         }
     }
 
-    console.log(`Dependeinces ${dependencies}`);
+    const val = JSON.stringify(dependencies);
+
+    console.log(`Dependeinces ${val}`);
 
 }
 
