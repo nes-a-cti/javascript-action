@@ -274,10 +274,10 @@ async function run(){
             buf += data;
         }).on('end', () => {
             console.log('Data completed.');
+            console.log('Buffer size ', buf.length );
+            console.log(buf);
         });
-
-        console.log('Buffer size ', buf.length );
-        console.log(buf);
+        
         // let cmdOut = "";
         // let cmdArgs = [];
         // let command = './gradlew dependencies';
