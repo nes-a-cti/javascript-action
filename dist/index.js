@@ -67,7 +67,8 @@ function findDependencies(content){
         
         if(lines[index].includes('--- ')){
             let ln = lines[index].trim();
-            ln = ln.substring(ln.indexOf('--- ')+4).substring(0, ln.indexOf(' '));
+            ln = ln.substring(ln.indexOf('--- ')+4);
+            console.log(`Index Of space `, ln.substring(0, ln.indexOf(' ')))
             dependencies.add(ln);
         }
     }
