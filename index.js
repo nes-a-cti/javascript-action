@@ -61,7 +61,7 @@ function findDependencies(content){
         
         if(lines[index].includes('--- ')){
             let ln = lines[index].trim();
-            ln = ln.substring(ln.indexOf('--- ')+4)
+            ln = ln.substring(ln.indexOf('--- ')+4).substring(0, ln.indexOf(' '));
             dependencies.add(ln);
         }
     }
