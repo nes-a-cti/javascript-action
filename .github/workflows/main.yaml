@@ -6,12 +6,22 @@ jobs:
     name: A job to greet
     steps:
       # Adding steps
-      - name: Greet action step
-        id: greet
-        uses: nes-a-cti/javascript-action@v1.1
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1 
         with:
-          whom-to-greet: 'Joy!'
+          java-version: 1.8
+      - name: Check Gradle Dependencies
+        id: gradle_depend
+        uses: nes-a-cti/javascript-action@v1.1
+      
+      # Adding steps
+      # - name: Greet action step
+      #   id: greet
+      #   uses: nes-a-cti/javascript-action@v1.1
+      #   with:
+      #     whom-to-greet: 'Joy!'
           
-      - name: Get the output
-        run: echo "The time was ${{steps.greet.outputs.time}}"
+      # - name: Get the output
+      #   run: echo "The time was ${{steps.greet.outputs.time}}"
 
