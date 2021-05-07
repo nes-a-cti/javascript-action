@@ -39,20 +39,20 @@ requiredDependencies.add('org.hamcrest:hamcrest-core:1.3');
 async function run(){
     try{
 
-        console.log('File Read Start');
+        // console.log('File Read Start');
 
-        const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
+        // const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
 
-        console.log('Stream Created.');
+        // console.log('Stream Created.');
 
-        let buf = '';
+        // let buf = '';
 
-        fileStream.on('data', data => {
-            console.log(data);
-            buf += data;
-        }).on('end', () => {            
-            console.log(buf);
-        });
+        // fileStream.on('data', data => {
+        //     console.log(data);
+        //     buf += data;
+        // }).on('end', () => {            
+        //     console.log(buf);
+        // });
         
         let cmdOut = "";
         let cmdArgs = [];
@@ -67,7 +67,7 @@ async function run(){
         cmdOpts.ignoreReturnCode = true;
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;        
-
+        await readDependenciesFile();
         // const foundDependency = findDependencies(data);
         // console.log(`2foundDependency : ${foundDependency.size}`);
         // let hasConfilct = await compareDependecies(foundDependency);
@@ -81,21 +81,21 @@ async function run(){
 
 }
 
-// async function readDependenciesFile(){
-//         return new Promise((resolve, reject) => {            
-//             const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
-//             let buf = '';
+async function readDependenciesFile(){
+        return new Promise((resolve, reject) => {            
+            const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
+            let buf = '';
     
-//             fileStream.on('data', data => {                
-//                 buf += data;
-//             }).on('end', () => {            
-//                 // resolve(constructRequiredDependencies(buf));
-//             }).on('error', error => {
-//                 console.log('Error : ' + error.message);
-//                 reject(error);
-//             });
-//         });        
-// }
+            fileStream.on('data', data => {                
+                buf += data;
+            }).on('end', () => {            
+                // resolve(constructRequiredDependencies(buf));
+            }).on('error', error => {
+                console.log('Error : ' + error.message);
+                reject(error);
+            });
+        });        
+}
 
 // function constructRequiredDependencies(data){
 //     const lines = data.split('\n');
