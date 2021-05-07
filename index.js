@@ -37,7 +37,7 @@ async function run(){
     try{
         let cmdOut = "";
         let cmdArgs = [];
-        let command = 'gradle dependencies';
+        let command = './gradlew dependencies';
         // let command = 'pwd';
         const cmdOpts = {};
         cmdOpts.listeners = {
@@ -74,7 +74,7 @@ function compareDependecies(foundDependency){
     });
 
     console.log(`Conflicted Dependencies Size : ${conflictedDepencies.size}`);
-    console.log(`Conflicted Dependencies : ${JSON.stringify(conflictedDepencies)}`);
+    console.log(`Conflicted Dependencies : ${Array.from(conflictedDepencies).join(',')}`);
 }
 
 function findDependencies(content){
