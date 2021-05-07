@@ -6097,8 +6097,10 @@ try{
   core.setOutput("time", time);
   // const payload = JSON.stringify(github.context.payload, undefined, 2);
   // console.log(`The event payload : ${payload}`);
-  const path = core.getInput("path");
-  console.log(`Path11 : ${path}`);
+  const path1 = core.getInput("path");
+  const path2 = core.getInput("PATH");
+  console.log(`Path11 : ${path1}`);
+  console.log(`Path12 : ${path2}`);
 }catch(error){
   core.setFailed(error.message);
 }
