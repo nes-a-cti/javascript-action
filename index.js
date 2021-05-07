@@ -21,7 +21,7 @@ const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
 const { Storage } = require('@google-cloud/storage');
-const { resolve, content } = require('./dist');
+const { resolve } = require('./dist');
 const storage = new Storage();
 
 const source = ".";
@@ -69,13 +69,13 @@ async function run(){
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;        
 
-        // const foundDependency = findDependencies(data);
-        // console.log(`2foundDependency : ${foundDependency.size}`);
-        // let hasConfilct = compareDependecies(foundDependency);
-        // console.log('Test1 : ', hasConfilct);
+        const foundDependency = findDependencies(data);
+        console.log(`2foundDependency : ${foundDependency.size}`);
+        let requiredDependencies = await readDependenciesFile();   
+        // let hasConfilct = await compareDependecies(foundDependency);
+        console.log('Test1 : ', requiredDependencies);
 
-        // console.log(`Exit Code : ${exitCode}`);
-        await readDependenciesFile();
+        console.log(`Exit Code : ${exitCode}`);
 
     }catch(error){
         core.setFailed(error.message);
@@ -84,22 +84,17 @@ async function run(){
 }
 
 async function readDependenciesFile(){
-        // return new Promise((resolve, reject) => {            
-        //     let buf = '';
-        //     storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream().on('data', data => {                
-        //         buf += data;
-        //     }).on('end', () => {            
-        //         resolve(constructRequiredDependencies(buf));
-        //     }).on('error', error => {
-        //         console.log('Error : ' + error.message);
-        //         reject(error);
-        //     });
-        // });        
-        storage.bucket('ds_testclasses').file('dependencies.txt').download((error, content) => {
-            console.log("File downloaded11")
-        });
-        // console.log(content);
-        // return constructRequiredDependencies(content);
+        return new Promise((resolve, reject) => {            
+            let buf = '';
+            storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream().on('data', data => {                
+                buf += data;
+            }).on('end', () => {            
+                resolve(constructRequiredDependencies(buf));
+            }).on('error', error => {
+                console.log('Error : ' + error.message);
+                reject(error);
+            });
+        });        
 }
 
 function constructRequiredDependencies(data){
@@ -113,8 +108,7 @@ function constructRequiredDependencies(data){
 }
 
 
- function compareDependecies(foundDependency){    
-        let requiredDependencies = readDependenciesFile();        
+function compareDependecies(foundDependency){                 
         console.log(`1foundDependency : ${foundDependency.size}`);
         console.log(`requiredDependencies : ${requiredDependencies.size}`);
         const conflictedDepencies = new Set();
