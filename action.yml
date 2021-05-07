@@ -1,7 +1,7 @@
 name: 'Hello There'
 description: 'Great and record time'
 inputs:
-  whom-to-greet:  # id of input
+  whom-to-greet:  # id of input1
     description: 'Whom to greet'
     required: false
     default: 'There!'
