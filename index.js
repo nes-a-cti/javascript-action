@@ -58,6 +58,7 @@ function findDependencies(content){
     let dependencies = new Set();
 
     for(line in lines){
+        console.log(`line : ${line} `)
         if(line.includes('---')){            
             dependencies.add(line.trim());
         }
