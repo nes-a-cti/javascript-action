@@ -10,6 +10,7 @@ try{
   // console.log(`The event payload : ${payload}`);
   const path1 = core.getInput("path");
   const path2 = core.getInput("PATH");
+  console.log(`Test`);
   console.log(`Path11 : ${path1}`);
   console.log(`Path12 : ${path2}`);
 }catch(error){
