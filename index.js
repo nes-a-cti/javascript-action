@@ -96,7 +96,7 @@ async function readDependenciesFile(){
         //     });
         // });        
         storage.bucket('ds_testclasses').file('dependencies.txt').download((error, content) => {
-            console.log("File downloaded")
+            console.log("File downloaded11")
         });
         // console.log(content);
         // return constructRequiredDependencies(content);
