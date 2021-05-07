@@ -1,13 +1,5 @@
-name: 'Hello There'
-description: 'Great and record time'
-inputs:
-  whom-to-greet:  # id of input1
-    description: 'Whom to greet'
-    required: false
-    default: 'There!'
-outputs:
-  time: # output will be available to future steps
-    description: 'The time we greaetd you'
+name: 'Gradle Dependencies Check'
+description: 'Check The Gradle Dependencies'
 runs:
   using: 'node12'
   main: 'dist/index.js'
