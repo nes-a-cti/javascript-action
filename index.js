@@ -48,12 +48,13 @@ async function run(){
         let buf = '';
 
         fileStream.on('data', data => {
+            console.log(data);
             buf += data;
         }).on('end', () => {
             console.log('Data completed.');
         });
 
-        console.log(`Buf : ${buf}` );
+        console.log(buf );
         // let cmdOut = "";
         // let cmdArgs = [];
         // let command = './gradlew dependencies';
