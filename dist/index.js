@@ -29,7 +29,7 @@ const core = __nccwpck_require__(619);
 const source = ".";
 
 const requiredDependencies = new Set();
-requiredDependencies.add('com.google.guava:guava:29.0-jre');
+requiredDependencies.add('com.google.guava:guava:30.0-jre');
 requiredDependencies.add('com.google.guava:failureaccess:1.0.1');
 requiredDependencies.add('com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava');
 requiredDependencies.add('com.google.code.findbugs:jsr305:3.0.2');
