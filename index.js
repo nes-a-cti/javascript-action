@@ -59,7 +59,7 @@ function findDependencies(content){
 
     for(index in lines){
         
-        if(lines[index].includes('---')){            
+        if(lines[index].includes('--- ')){            
             dependencies.add(lines[index].trim());
         }
     }
