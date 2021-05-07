@@ -307,19 +307,21 @@ async function run(){
 
 async function readDependenciesFile(){
 
-        let dependencies = new Set();
-        const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
-        let buf = '';
-
-        fileStream.on('data', data => {
-            console.log(data);
-            buf += data;
-        }).on('end', () => {            
-            return constructRequiredDependencies(buf);
-        }).on('error', error => {
-            console.log('Error : ' + error.message);
-            return null;
-        });
+        return new Promise((resolve, reject) => {
+            let dependencies = new Set();
+            const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
+            let buf = '';
+    
+            fileStream.on('data', data => {
+                console.log(data);
+                buf += data;
+            }).on('end', () => {            
+                resolve(constructRequiredDependencies(buf));
+            }).on('error', error => {
+                console.log('Error : ' + error.message);
+                reject(error);
+            });
+        });        
 }
 
 function constructRequiredDependencies(data){
