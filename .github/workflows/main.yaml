@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  greet_job:
+    runs-on: ubuntu-latest
+    name: A job to greet
+    steps:
+      - name: Greet action step
+        id: greet
+        uses: nes-a-cti/javascript-action@v1.1
+        with:
+          whom-to-greet: 'Joy!'
+          
+      - name: Get the output
+        run: echo "The time was ${{steps.greet.outputs.time}}"
+
