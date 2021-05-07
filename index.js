@@ -21,7 +21,7 @@ const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
 const { Storage } = require('@google-cloud/storage');
-const { resolve } = require('./dist');
+const { resolve, content } = require('./dist');
 const storage = new Storage();
 
 const source = ".";
@@ -69,12 +69,13 @@ async function run(){
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;        
 
-        const foundDependency = findDependencies(data);
-        console.log(`2foundDependency : ${foundDependency.size}`);
-        let hasConfilct = compareDependecies(foundDependency);
-        console.log('Test1 : ', hasConfilct);
+        // const foundDependency = findDependencies(data);
+        // console.log(`2foundDependency : ${foundDependency.size}`);
+        // let hasConfilct = compareDependecies(foundDependency);
+        // console.log('Test1 : ', hasConfilct);
 
-        console.log(`Exit Code : ${exitCode}`);
+        // console.log(`Exit Code : ${exitCode}`);
+        readDependenciesFile();
 
     }catch(error){
         core.setFailed(error.message);
@@ -94,9 +95,11 @@ async function readDependenciesFile(){
         //         reject(error);
         //     });
         // });        
-        const content = await storage.bucket('ds_testclasses').file('dependencies.txt').download();
-        console.log(content);
-        return content;
+        storage.bucket('ds_testclasses').file('dependencies.txt').download((error, content) => {
+            console.log("File downloaded")
+        });
+        // console.log(content);
+        // return constructRequiredDependencies(content);
 }
 
 function constructRequiredDependencies(data){
@@ -110,7 +113,7 @@ function constructRequiredDependencies(data){
 }
 
 
-function compareDependecies(foundDependency){    
+ function compareDependecies(foundDependency){    
         let requiredDependencies = readDependenciesFile();        
         console.log(`1foundDependency : ${foundDependency.size}`);
         console.log(`requiredDependencies : ${requiredDependencies.size}`);
