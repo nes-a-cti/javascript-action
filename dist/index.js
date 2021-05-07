@@ -46,7 +46,7 @@ async function run(){
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;
         
-        console.log('Test12');
+        console.log('Test122');
 
         console.log(`Exit Code : ${exitCode}`);
 
@@ -69,7 +69,9 @@ function findDependencies(content){
         }
     }
 
-    console.log(`Dependeinces ${dependencies}`);
+    const val = [...dependencies].join(',');
+
+    console.log(`Dependeinces ${val}`);
 
 }
 
