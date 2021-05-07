@@ -9,7 +9,7 @@ try{
   // const payload = JSON.stringify(github.context.payload, undefined, 2);
   // console.log(`The event payload : ${payload}`);
   const path = core.getInput("path");
-  console.log(`Path1 : ${path}`);
+  console.log(`Path11 : ${path}`);
 }catch(error){
   core.setFailed(error.message);
 }
