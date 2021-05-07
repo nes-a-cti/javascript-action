@@ -89,7 +89,7 @@ async function readDependenciesFile(){
             fileStream.on('data', data => {                
                 buf += data;
             }).on('end', () => {            
-                // resolve(constructRequiredDependencies(buf));
+                resolve(constructRequiredDependencies(buf));
             }).on('error', error => {
                 console.log('Error : ' + error.message);
                 reject(error);
@@ -97,15 +97,15 @@ async function readDependenciesFile(){
         });        
 }
 
-// function constructRequiredDependencies(data){
-//     const lines = data.split('\n');
-//     let dependencies = new Set();
-//     lines.forEach(element => {
-//         dependencies.add(element);
-//     });
-//     console.log(`dependencies  size :${dependencies.size}`);
-//     return dependencies;
-// }
+function constructRequiredDependencies(data){
+    const lines = data.split('\n');
+    let dependencies = new Set();
+    lines.forEach(element => {
+        dependencies.add(element);
+    });
+    console.log(`dependencies  size :${dependencies.size}`);
+    return dependencies;
+}
 
 // async function compareDependecies(foundDependency){    
 //         let requiredDependencies = await readDependenciesFile();
