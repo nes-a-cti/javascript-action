@@ -71,7 +71,7 @@ async function run(){
 
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
-        let hasConfilct = await compareDependecies(foundDependency);
+        let hasConfilct = compareDependecies(foundDependency);
         console.log('Test1 : ', hasConfilct);
 
         console.log(`Exit Code : ${exitCode}`);
@@ -95,6 +95,7 @@ async function readDependenciesFile(){
         //     });
         // });        
         const content = await storage.bucket('ds_testclasses').file('dependencies.txt').download();
+        console.log(content);
         return content;
 }
 
