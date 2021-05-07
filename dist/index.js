@@ -63,10 +63,10 @@ function findDependencies(content){
     let lines = content.split('\n');
     let dependencies = new Set();
 
-    for(line in lines){
-        console.log(`line : ${line} `)
-        if(line.includes('---')){            
-            dependencies.add(line.trim());
+    for(index in lines){
+        
+        if(lines[index].includes('---')){            
+            dependencies.add(lines[index].trim());
         }
     }
 
