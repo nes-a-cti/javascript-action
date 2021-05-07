@@ -332,17 +332,18 @@ function constructRequiredDependencies(data){
 
 async function compareDependecies(foundDependency){    
         let requiredDependencies = await readDependenciesFile();
-        
-        console.log(`1foundDependency : ${foundDependency.size}`);
-        console.log(`requiredDependencies : ${requiredDependencies.size}`);
-        const conflictedDepencies = new Set();
-        Array.from(foundDependency).every(value => {
-                if(!requiredDependencies.has(value)){
-                    conflictedDepencies.add(value);
-                    return (false);
-                }
-                return (true);
-        });        
+        return new Promise((resolve, reject) => {
+            console.log(`1foundDependency : ${foundDependency.size}`);
+            console.log(`requiredDependencies : ${requiredDependencies.size}`);
+            const conflictedDepencies = new Set();
+            Array.from(foundDependency).every(value => {
+                    if(!requiredDependencies.has(value)){
+                        conflictedDepencies.add(value);
+                        resolve (false);
+                    }
+                    resolve (true);
+            });        
+        });
             
 }
 
