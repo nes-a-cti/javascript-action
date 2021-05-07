@@ -274,6 +274,8 @@ async function run(){
         }).on('end', () => {
             console.log('Data completed.');
         });
+
+        console.log(`Buf : ${buf}` );
         // let cmdOut = "";
         // let cmdArgs = [];
         // let command = './gradlew dependencies';
