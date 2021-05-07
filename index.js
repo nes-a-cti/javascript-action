@@ -20,8 +20,8 @@
 const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
-const Storage = require('@google-cloud/storage');
-const storage = Storage();
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage();
 
 const source = ".";
 

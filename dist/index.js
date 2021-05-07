@@ -242,8 +242,8 @@ module.exports = JSON.parse('["ac","com.ac","edu.ac","gov.ac","net.ac","mil.ac",
 const {exec} = __nccwpck_require__(341);
 const core = __nccwpck_require__(2619);
 
-const Storage = __nccwpck_require__(9160);
-const storage = Storage();
+const { Storage } = __nccwpck_require__(9160);
+const storage = new Storage();
 
 const source = ".";
 
