@@ -21,6 +21,7 @@ const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
 const { Storage } = require('@google-cloud/storage');
+const { resolve } = require('./dist');
 const storage = new Storage();
 
 const source = ".";
@@ -70,8 +71,8 @@ async function run(){
 
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
-        await compareDependecies(foundDependency);
-        console.log('Test14');
+        let hasConfilct = await compareDependecies(foundDependency);
+        console.log('hasConfilct : ${hasConfilct}');
 
         console.log(`Exit Code : ${exitCode}`);
 
@@ -89,8 +90,7 @@ async function readDependenciesFile(){
             const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
             let buf = '';
     
-            fileStream.on('data', data => {
-                console.log(data);
+            fileStream.on('data', data => {                
                 buf += data;
             }).on('end', () => {            
                 resolve(constructRequiredDependencies(buf));
@@ -112,20 +112,19 @@ function constructRequiredDependencies(data){
 }
 
 async function compareDependecies(foundDependency){
-    let requiredDependencies = await readDependenciesFile();
-    console.log(`1foundDependency : ${foundDependency.size}`);
-    console.log(`requiredDependencies : ${requiredDependencies.size}`);
-    const conflictedDepencies = new Set();
-    Array.from(foundDependency).every(value => {
-            if(!requiredDependencies.has(value)){
-                conflictedDepencies.add(value);
-                return false;
-            }
-            return true;
-    });
-
-    console.log(`Conflicted Dependencies Size : ${conflictedDepencies.size}`);
-    console.log(`Conflicted Dependencies : ${Array.from(conflictedDepencies).join(',')}`);
+    new Promise(async (resolve, reject) => {
+        let requiredDependencies = await readDependenciesFile();
+        console.log(`1foundDependency : ${foundDependency.size}`);
+        console.log(`requiredDependencies : ${requiredDependencies.size}`);
+        const conflictedDepencies = new Set();
+        Array.from(foundDependency).every(value => {
+                if(!requiredDependencies.has(value)){
+                    conflictedDepencies.add(value);
+                    resolve(false);
+                }
+                resolve(true);
+        });
+    });    
 }
 
 function findDependencies(content){
