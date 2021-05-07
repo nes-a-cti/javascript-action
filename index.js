@@ -26,8 +26,8 @@ async function run(){
     try{
         let cmdOut = "";
         let cmdArgs = [];
-        // let command = 'gradle dependencies';
-        let command = 'pwd';
+        let command = 'gradle dependencies';
+        // let command = 'pwd';
         const cmdOpts = {};
         cmdOpts.listeners = {
             stdout : (data = Buffer) => {
@@ -40,7 +40,7 @@ async function run(){
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;
         
-        console.log('Test');
+        console.log('Test1');
 
         console.log(`Exit Code : ${exitCode}`);
 
