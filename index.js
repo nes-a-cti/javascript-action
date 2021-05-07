@@ -44,11 +44,26 @@ async function run(){
 
         console.log(`Exit Code : ${exitCode}`);
 
-        console.log(`Data : ${data}`);
+        // console.log(`Data : ${data}`);
+        findDependencies(data);
 
     }catch(error){
         core.setFailed(error.message);
     }
+
+}
+
+function findDependencies(content){
+    let lines = content.split('\n');
+    let dependencies = new Set();
+
+    for(line in lines){
+        if(line.includes('---')){            
+            dependencies.add(line.trim());
+        }
+    }
+
+    console.log(`Dependeinces ${dependencies}`);
 
 }
 
