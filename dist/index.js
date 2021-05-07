@@ -46,6 +46,8 @@ async function run(){
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;
         
+        console.log('Test');
+
         console.log(`Exit Code : ${exitCode}`);
 
         console.log(`Data : ${data}`);
