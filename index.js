@@ -21,7 +21,6 @@ const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
 const { Storage } = require('@google-cloud/storage');
-const { resolve } = require('./dist');
 const storage = new Storage();
 
 const source = ".";
@@ -72,7 +71,7 @@ async function run(){
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
         let hasConfilct = await compareDependecies(foundDependency);
-        console.log('hasConfilct : ${hasConfilct}');
+        console.log('Test14', hasConfilct);
 
         console.log(`Exit Code : ${exitCode}`);
 
@@ -112,19 +111,17 @@ function constructRequiredDependencies(data){
 }
 
 async function compareDependecies(foundDependency){
-    
-        let requiredDependencies = await readDependenciesFile();
-        console.log(`1foundDependency : ${foundDependency.size}`);
-        console.log(`requiredDependencies : ${requiredDependencies.size}`);
-        const conflictedDepencies = new Set();
-        Array.from(foundDependency).every(value => {
-                if(!requiredDependencies.has(value)){
-                    conflictedDepencies.add(value);
-                    return false;
-                }
-                return true;
-        });
-    
+    let requiredDependencies = await readDependenciesFile();
+    console.log(`1foundDependency : ${foundDependency.size}`);
+    console.log(`requiredDependencies : ${requiredDependencies.size}`);
+    const conflictedDepencies = new Set();
+    Array.from(foundDependency).every(value => {
+            if(!requiredDependencies.has(value)){
+                conflictedDepencies.add(value);
+                return false;
+            }
+            return true;
+    });
 }
 
 function findDependencies(content){
