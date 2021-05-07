@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to greet
     steps:
+      # Adding steps
       - name: Greet action step
         id: greet
         uses: nes-a-cti/javascript-action@v1.1
