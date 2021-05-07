@@ -75,7 +75,7 @@ async function run(){
         // console.log('Test1 : ', hasConfilct);
 
         // console.log(`Exit Code : ${exitCode}`);
-        readDependenciesFile();
+        await readDependenciesFile();
 
     }catch(error){
         core.setFailed(error.message);
