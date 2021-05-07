@@ -263,7 +263,7 @@ async function run(){
 
         console.log('File Read Start');
 
-        const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createStream();
+        const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
 
         console.log('Stream Created.');
 
