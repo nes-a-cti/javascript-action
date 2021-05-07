@@ -32,7 +32,8 @@ async function run(){
     try{
         let cmdOut = "";
         let cmdArgs = [];
-        let command = 'gradle dependencies';
+        // let command = 'gradle dependencies';
+        let command = 'pwd';
         const cmdOpts = {};
         cmdOpts.listeners = {
             stdout : (data = Buffer) => {
