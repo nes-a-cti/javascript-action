@@ -272,32 +272,30 @@ async function run(){
         fileStream.on('data', data => {
             console.log(data);
             buf += data;
-        }).on('end', () => {
-            console.log('Data completed.');
-            console.log('Buffer size ', buf.length );
+        }).on('end', () => {            
             console.log(buf);
         });
         
-        // let cmdOut = "";
-        // let cmdArgs = [];
-        // let command = './gradlew dependencies';
-        // // let command = 'pwd';
-        // const cmdOpts = {};
-        // cmdOpts.listeners = {
-        //     stdout : (data = Buffer) => {
-        //         cmdOut += data.toString();
-        //     }
-        // }
-        // cmdOpts.ignoreReturnCode = true;
-        // let exitCode = await exec(command, cmdArgs, cmdOpts);
-        // let data = cmdOut;        
+        let cmdOut = "";
+        let cmdArgs = [];
+        let command = './gradlew dependencies';
+        // let command = 'pwd';
+        const cmdOpts = {};
+        cmdOpts.listeners = {
+            stdout : (data = Buffer) => {
+                cmdOut += data.toString();
+            }
+        }
+        cmdOpts.ignoreReturnCode = true;
+        let exitCode = await exec(command, cmdArgs, cmdOpts);
+        let data = cmdOut;        
 
-        // const foundDependency = findDependencies(data);
-        // console.log(`2foundDependency : ${foundDependency.size}`);
-        // compareDependecies(foundDependency);
-        // console.log('Test14');
+        const foundDependency = findDependencies(data);
+        console.log(`2foundDependency : ${foundDependency.size}`);
+        compareDependecies(foundDependency);
+        console.log('Test14');
 
-        // console.log(`Exit Code : ${exitCode}`);
+        console.log(`Exit Code : ${exitCode}`);
 
 
 
@@ -307,8 +305,37 @@ async function run(){
 
 }
 
-function compareDependecies(foundDependency){
+async function readDependenciesFile(){
+
+        let dependencies = new Set();
+        const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
+        let buf = '';
+
+        fileStream.on('data', data => {
+            console.log(data);
+            buf += data;
+        }).on('end', () => {            
+            return constructRequiredDependencies(buf);
+        }).on('error', error => {
+            console.log('Error : ' + error.message);
+            return null;
+        });
+}
+
+function constructRequiredDependencies(data){
+    const lines = data.split('\n');
+    let dependencies = new Set();
+    lines.forEach(element => {
+        dependencies.add(element);
+    });
+    console.log(`dependencies  size :${dependencies.size}`);
+    return dependencies;
+}
+
+async function compareDependecies(foundDependency){
+    let requiredDependencies = await readDependenciesFile();
     console.log(`1foundDependency : ${foundDependency.size}`);
+    console.log(`requiredDependencies : ${requiredDependencies.size}`);
     const conflictedDepencies = new Set();
     Array.from(foundDependency).every(value => {
             if(!requiredDependencies.has(value)){
