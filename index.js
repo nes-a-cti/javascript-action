@@ -83,19 +83,19 @@ async function run(){
 }
 
 async function readDependenciesFile(){
-        return new Promise((resolve, reject) => {            
-            const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
-            let buf = '';
-    
-            fileStream.on('data', data => {                
-                buf += data;
-            }).on('end', () => {            
-                resolve(constructRequiredDependencies(buf));
-            }).on('error', error => {
-                console.log('Error : ' + error.message);
-                reject(error);
-            });
-        });        
+        // return new Promise((resolve, reject) => {            
+        //     let buf = '';
+        //     storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream().on('data', data => {                
+        //         buf += data;
+        //     }).on('end', () => {            
+        //         resolve(constructRequiredDependencies(buf));
+        //     }).on('error', error => {
+        //         console.log('Error : ' + error.message);
+        //         reject(error);
+        //     });
+        // });        
+        const content = await storage.bucket('ds_testclasses').file('dependencies.txt').download();
+        return content;
 }
 
 function constructRequiredDependencies(data){
@@ -108,9 +108,9 @@ function constructRequiredDependencies(data){
     return dependencies;
 }
 
-async function compareDependecies(foundDependency){    
-        let requiredDependencies = await readDependenciesFile();
-        
+
+function compareDependecies(foundDependency){    
+        let requiredDependencies = readDependenciesFile();        
         console.log(`1foundDependency : ${foundDependency.size}`);
         console.log(`requiredDependencies : ${requiredDependencies.size}`);
         const conflictedDepencies = new Set();
