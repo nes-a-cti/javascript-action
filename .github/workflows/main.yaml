@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2      
       - name: Check Gradle Dependencies
         id: gradle_depend
-        uses: nes-a-cti/javascript-action@v1.1
+        uses: nes-a-cti/javascript-action@v1.2
       
       # Adding steps
       # - name: Greet action step
