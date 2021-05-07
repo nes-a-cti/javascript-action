@@ -47,14 +47,14 @@ async function run(){
         }
         cmdOpts.ignoreReturnCode = true;
         let exitCode = await exec(command, cmdArgs, cmdOpts);
-        let data = cmdOut;
-        
+        let data = cmdOut;        
+
+        const foundDependency = findDependencies(data);
+        console.log(`2foundDependency : ${foundDependency.size}`);
+        compareDependecies(foundDependency);
         console.log('Test13');
 
         console.log(`Exit Code : ${exitCode}`);
-
-        const foundDependency = findDependencies(data);
-        compareDependecies(foundDependency);
 
     }catch(error){
         core.setFailed(error.message);
@@ -63,6 +63,7 @@ async function run(){
 }
 
 function compareDependecies(foundDependency){
+    console.log(`1foundDependency : ${foundDependency.size}`);
     const conflictedDepencies = new Set();
     Array.from(foundDependency).every(value => {
             if(!requiredDependencies.has(value)){
