@@ -20,9 +20,8 @@
 const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
-const { Storage } = require('@google-cloud/storage');
-const { resolve } = require('./dist');
-const storage = new Storage();
+// const { Storage } = require('@google-cloud/storage');
+// const storage = new Storage();
 
 const source = ".";
 
@@ -69,9 +68,9 @@ async function run(){
         let exitCode = await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;        
 
-        const foundDependency = findDependencies(data);
-        console.log(`2foundDependency : ${foundDependency.size}`);
-        let hasConfilct = await compareDependecies(foundDependency);
+        // const foundDependency = findDependencies(data);
+        // console.log(`2foundDependency : ${foundDependency.size}`);
+        // let hasConfilct = await compareDependecies(foundDependency);
         console.log('Test1 : ', hasConfilct);
 
         console.log(`Exit Code : ${exitCode}`);
@@ -82,64 +81,64 @@ async function run(){
 
 }
 
-async function readDependenciesFile(){
-        return new Promise((resolve, reject) => {            
-            const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
-            let buf = '';
+// async function readDependenciesFile(){
+//         return new Promise((resolve, reject) => {            
+//             const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
+//             let buf = '';
     
-            fileStream.on('data', data => {                
-                buf += data;
-            }).on('end', () => {            
-                resolve(constructRequiredDependencies(buf));
-            }).on('error', error => {
-                console.log('Error : ' + error.message);
-                reject(error);
-            });
-        });        
-}
+//             fileStream.on('data', data => {                
+//                 buf += data;
+//             }).on('end', () => {            
+//                 // resolve(constructRequiredDependencies(buf));
+//             }).on('error', error => {
+//                 console.log('Error : ' + error.message);
+//                 reject(error);
+//             });
+//         });        
+// }
 
-function constructRequiredDependencies(data){
-    const lines = data.split('\n');
-    let dependencies = new Set();
-    lines.forEach(element => {
-        dependencies.add(element);
-    });
-    console.log(`dependencies  size :${dependencies.size}`);
-    return dependencies;
-}
+// function constructRequiredDependencies(data){
+//     const lines = data.split('\n');
+//     let dependencies = new Set();
+//     lines.forEach(element => {
+//         dependencies.add(element);
+//     });
+//     console.log(`dependencies  size :${dependencies.size}`);
+//     return dependencies;
+// }
 
-async function compareDependecies(foundDependency){    
-        let requiredDependencies = await readDependenciesFile();
+// async function compareDependecies(foundDependency){    
+//         let requiredDependencies = await readDependenciesFile();
         
-        console.log(`1foundDependency : ${foundDependency.size}`);
-        console.log(`requiredDependencies : ${requiredDependencies.size}`);
-        const conflictedDepencies = new Set();
-        Array.from(foundDependency).every(value => {
-                if(!requiredDependencies.has(value)){
-                    conflictedDepencies.add(value);
-                    return (false);
-                }
-                return (true);
-        });        
+//         console.log(`1foundDependency : ${foundDependency.size}`);
+//         console.log(`requiredDependencies : ${requiredDependencies.size}`);
+//         const conflictedDepencies = new Set();
+//         Array.from(foundDependency).every(value => {
+//                 if(!requiredDependencies.has(value)){
+//                     conflictedDepencies.add(value);
+//                     return (false);
+//                 }
+//                 return (true);
+//         });        
             
-}
+// }
 
-function findDependencies(content){
-    let lines = content.split('\n');
-    let dependencies = new Set();
+// function findDependencies(content){
+//     let lines = content.split('\n');
+//     let dependencies = new Set();
 
-    for(index in lines){
+//     for(index in lines){
         
-        if(lines[index].includes('--- ')){
-            let ln = lines[index].trim();
-            ln = ln.substring(ln.indexOf('--- ')+4);
-            ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
-            dependencies.add(ln);
-        }
-    }    
+//         if(lines[index].includes('--- ')){
+//             let ln = lines[index].trim();
+//             ln = ln.substring(ln.indexOf('--- ')+4);
+//             ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
+//             dependencies.add(ln);
+//         }
+//     }    
 
-    return dependencies;
-}
+//     return dependencies;
+// }
 
 module.exports = {run}
 
