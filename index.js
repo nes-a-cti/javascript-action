@@ -52,7 +52,7 @@ async function run(){
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
         compareDependecies(foundDependency);
-        console.log('Test13');
+        console.log('Test14');
 
         console.log(`Exit Code : ${exitCode}`);
 
@@ -89,8 +89,9 @@ function findDependencies(content){
             ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
             dependencies.add(ln);
         }
-    }
-    const val = [...dependencies].join(',');
+    }    
+
+    return dependencies;
 }
 
 module.exports = {run}
