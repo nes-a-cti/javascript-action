@@ -74,7 +74,7 @@ function compareDependecies(foundDependency){
     });
 
     console.log(`Conflicted Dependencies Size : ${conflictedDepencies.size}`);
-    console.log(`Conflicted Dependencies : ${JSON.stringify(conflictedDepencies.size)}`);
+    console.log(`Conflicted Dependencies : ${JSON.stringify(conflictedDepencies)}`);
 }
 
 function findDependencies(content){
