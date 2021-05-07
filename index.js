@@ -63,6 +63,9 @@ function findDependencies(content){
         }
     }
 
+    console.log(`Length1 : ${dependencies.size}`);
+    console.log(`Length2 : `, dependencies.size);
+
     const val = [...dependencies].join(',');
 
     console.log(`Dependeinces ${val}`);
