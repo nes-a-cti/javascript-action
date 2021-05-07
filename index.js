@@ -112,8 +112,8 @@ function constructRequiredDependencies(data){
 }
 
 async function compareDependecies(foundDependency){
-    new Promise(async (resolve, reject) => {
-        let requiredDependencies = await readDependenciesFile();
+    new Promise((resolve, reject) => {
+        let requiredDependencies = readDependenciesFile();
         console.log(`1foundDependency : ${foundDependency.size}`);
         console.log(`requiredDependencies : ${requiredDependencies.size}`);
         const conflictedDepencies = new Set();
