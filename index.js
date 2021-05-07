@@ -71,8 +71,7 @@ async function run(){
 
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
-        // let hasConfilct = await compareDependecies(foundDependency);
-        await readDependenciesFile();
+        let hasConfilct = await compareDependecies(foundDependency);
         console.log('Test1 : ', hasConfilct);
 
         console.log(`Exit Code : ${exitCode}`);
@@ -110,7 +109,7 @@ function constructRequiredDependencies(data){
 }
 
 async function compareDependecies(foundDependency){    
-        // let requiredDependencies = await readDependenciesFile();
+        let requiredDependencies = await readDependenciesFile();
         
         console.log(`1foundDependency : ${foundDependency.size}`);
         console.log(`requiredDependencies : ${requiredDependencies.size}`);
