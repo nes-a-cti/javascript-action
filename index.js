@@ -4,7 +4,9 @@ const github = require('@actions/github')
 try{
   const nameToGreet = core.getInput('whom-to-greet');
   console.log(`Hello, ${nameToGreet}`);
-  core.setOutput("time", (new Date()).toTimeString());
+  const time = (new Date()).toTimeString();
+  console.log(`Time : ${time}`);
+  core.setOutput("time", time);
   const payload = JSON.stringify(github.context.payload, undefined, 2);
   console.log(`The event payload : ${payload}`);
 }catch(error){
