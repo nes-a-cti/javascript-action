@@ -95,7 +95,9 @@ function constructRequiredDependencies(data){
     lines.forEach(element => {
         // dependencies.add(element);
         let depends = element.split(':');
-        dependencies[depends[0] + ":" + depends[1]].version = depends[2];
+        let key = depends[0] + ":" + depends[1];
+        dependencies[key] = {};
+        dependencies[key].version = depends[2];
     });
     console.log(`dependencies  size :${JSON.stringify(dependencies)}`);
     return dependencies;
