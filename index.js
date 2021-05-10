@@ -205,6 +205,7 @@ function getDependecyTree(ldependencies){
         let depends = dependency.split(':');
         let key = depends[0].replace(END.substring(1), '') + ":" + depends[1];
         let version = depends[2];
+        if(!version) console.log(`No Version Found for :${dependency}`)
         if(version.indexOf(UPGRADE) > 0){     
             version = version.replace(version.substring(0, version.indexOf(UPGRADE)+4), '');                                                
         }
