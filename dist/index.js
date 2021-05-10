@@ -338,12 +338,10 @@ async function compareDependecies(foundDependency){
             // });       
             Object.entries(foundDependency).forEach(([key, value]) => {
                 let val = '';        
-                if(requiredDependencies[key]){
-                    console.log(`Key :${key}`);
-                    console.log(`requiredDependencies :${requiredDependencies[key]}`);
+                if(requiredDependencies[key]){                    
                     let repVersion = foundDependency[key].version;
                     console.log(`repVersion :${repVersion}`);
-                    let reqVersion = readDependenciesFile[key].version;                    
+                    let reqVersion = requiredDependencies[key].version;                    
                     console.log(`reqVersion :${reqVersion}`);
                     if(repVersion !== reqVersion){                        
                         val += 'Requried = ' + key + ":" + reqVersion;
