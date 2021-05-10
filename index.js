@@ -56,7 +56,8 @@ async function run(){
         }
         cmdOpts.ignoreReturnCode = true;
         await exec(command, cmdArgs, cmdOpts);
-        let data = cmdOut;                
+        let data = cmdOut;  
+        console.log('Test12132')
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency}`);
         const conflictedDepencies = await compareDependecies(foundDependency);

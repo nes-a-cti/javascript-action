@@ -265,7 +265,7 @@ requiredDependencies.add('org.hamcrest:hamcrest-core:1.3');
 
 async function run(){
     try{
-        
+        console.log('run start');
         let cmdOut = "";
         let cmdArgs = [];
         let command = './gradlew dependencies';
@@ -278,14 +278,15 @@ async function run(){
         }
         cmdOpts.ignoreReturnCode = true;
         await exec(command, cmdArgs, cmdOpts);
-        let data = cmdOut;                
+        let data = cmdOut;  
+        console.log('Test12132')
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency}`);
         const conflictedDepencies = await compareDependecies(foundDependency);
         console.log('Test11 : ', conflictedDepencies.size);
 
         if(conflictedDepencies.size > 0){
-            core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
+            core.setFailed(`Build Script conflict \n ${Array.from(conflictedDepencies).join(',')} `);
         }        
 
     }catch(error){
@@ -373,36 +374,42 @@ async function compareDependecies(foundDependency){
 // }
 
 function findDependencies(content){
-    let levelDependencies = {}; 
-    const lines = content.split('\n');
-
-    for(let index = 0; index <= lines.length; index++){
-        if(lines[index] && lines[index].indexOf(' - ') > 0){
-            let level = lines[index].substring(0, lines[index].indexOf(' - '));
-            levelDependencies[level] = [];
-            index++;            
-            while(lines[index] != ''){
-                if(lines[index].indexOf('-') < 0){
-                    delete levelDependencies[level];
-                }else{
-                    levelDependencies[level].push(lines[index]);                    
-                }
-                index++;                
-            }            
-        }
-    }
-        
+    console.log('findDependencies start');
     let repoDependencies = {};
-    Object.entries(levelDependencies).forEach(([key, value]) => {        
-        repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
-    })    
+    try{
+        let levelDependencies = {}; 
+        const lines = content.split('\n');
 
-    // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+        for(let index = 0; index <= lines.length; index++){        
+            if(lines[index] && lines[index].indexOf(' - ') > 0){
+                let level = lines[index].substring(0, lines[index].indexOf(' - '));
+                levelDependencies[level] = [];
+                index++;            
+                while(lines[index] != ''){
+                    if(lines[index].indexOf('-') < 0){
+                        delete levelDependencies[level];
+                    }else{
+                        levelDependencies[level].push(lines[index]);                    
+                    }
+                    index++;                
+                }            
+            }
+        }
+                    
+        Object.entries(levelDependencies).forEach(([key, value]) => {        
+            repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
+        })    
+        console.log('end1');
+        // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+    }catch(e){
+        console.log(e.stack);
+    }
 
     return repoDependencies;
 }
 
 function getDependecyTree(ldependencies){
+    console.log('getDependecyTree start')
     let dependencies = {};
     let parent = '';
     ldependencies.forEach(dependency => {        
