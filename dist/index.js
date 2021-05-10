@@ -340,10 +340,11 @@ async function compareDependecies(foundDependency){
                 let val = '';        
                 if(requiredDependencies[key]){
                     console.log(`Key :${key}`);
+                    console.log(`requiredDependencies :${requiredDependencies[key]}`);
                     let repVersion = foundDependency[key].version;
-                    console.log('repVersion :${repVersion}');
+                    console.log(`repVersion :${repVersion}`);
                     let reqVersion = readDependenciesFile[key].version;                    
-                    console.log('reqVersion :${reqVersion}');
+                    console.log(`reqVersion :${reqVersion}`);
                     if(repVersion !== reqVersion){                        
                         val += 'Requried = ' + key + ":" + reqVersion;
                         val += ', Found = ' + key + ":" + repVersion;
