@@ -63,7 +63,7 @@ async function run(){
         console.log('Test11 : ', conflictedDepencies.size);
 
         if(conflictedDepencies.size > 0){
-            core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
+            core.setFailed(`Build Script conflict \n ${Array.from(conflictedDepencies).join(',')} `);
         }        
 
     }catch(error){
