@@ -20,7 +20,7 @@
 const START = `+--- `;
 const END = `--- `;
 const UPGRADE = ' -> '
-const NOT_RESOLVED = '  (n)'
+const NOT_RESOLVED = ' (n)'
 
 
 const {exec} = require('@actions/exec');

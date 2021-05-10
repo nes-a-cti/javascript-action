@@ -242,7 +242,7 @@ module.exports = JSON.parse('["ac","com.ac","edu.ac","gov.ac","net.ac","mil.ac",
 const START = `+--- `;
 const END = `--- `;
 const UPGRADE = ' -> '
-const NOT_RESOLVED = '  (n)'
+const NOT_RESOLVED = ' (n)'
 
 
 const {exec} = __nccwpck_require__(341);
