@@ -353,7 +353,7 @@ async function compareDependecies(foundDependency){
                         conflictedDepencies.add(val);
                     }
                 }else{
-                    val = 'Dependency not allowed : ' + key + ":" + repVersion;
+                    val = 'Dependency not allowed : ' + key + ":" + foundDependency[key].version;
                     conflictedDepencies.add(val);
                  }                 
             }); 
