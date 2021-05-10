@@ -327,10 +327,11 @@ function constructRequiredDependencies(data){
 }
 
 async function compareDependecies(foundDependency){    
+    try{
         let requiredDependencies = await readDependenciesFile();
         return new Promise((resolve, reject) => {
-            console.log(`1foundDependency : ${JSON.stringify(foundDependency)}`);
-            console.log(`requiredDependencies : ${JSON.stringify(requiredDependencies)}`);
+            // console.log(`1foundDependency : ${JSON.stringify(foundDependency)}`);
+            // console.log(`requiredDependencies : ${JSON.stringify(requiredDependencies)}`);
             const conflictedDepencies = new Set();
             // Array.from(foundDependency).every(value => {
             //         if(!requiredDependencies.has(value)){
@@ -353,7 +354,10 @@ async function compareDependecies(foundDependency){
                  }                 
             }); 
             resolve(conflictedDepencies);
-        });                
+        });       
+    }catch(e){
+        console.log(e.stack);
+    }         
 }
 
 // function findDependencies(content){
