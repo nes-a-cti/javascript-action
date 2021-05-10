@@ -190,7 +190,8 @@ function getDependecyTree(ldependencies){
     console.log('getDependecyTree start')
     let dependencies = {};
     let parent = '';
-    ldependencies.forEach(dependency => {        
+    ldependencies.forEach(dependency => {
+        if(dependency.indexOf(':') < 0) return;        
         let isParent = false;
         if(dependency.indexOf(START) == 0 || dependency.indexOf(END) == 0){            
             isParent = true;
@@ -204,8 +205,7 @@ function getDependecyTree(ldependencies){
         if(isParent) parent = dependency;
         let depends = dependency.split(':');
         let key = depends[0].replace(END.substring(1), '') + ":" + depends[1];
-        let version = depends[2];
-        if(!version) console.log(`No Version Found for :${dependency}`)
+        let version = depends[2];        
         if(version.indexOf(UPGRADE) > 0){     
             version = version.replace(version.substring(0, version.indexOf(UPGRADE)+4), '');                                                
         }

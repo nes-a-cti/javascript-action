@@ -1,5 +1,8 @@
-let ab = '  fbcd';
+const arr = [1, 2, 3, 4, 5];
 
-console.log(ab.indexOf('fb'));
-console.log(ab.substring(ab.indexOf('fb')));
-console.log(ab.substring(ab.indexOf('fb')).length);
+arr.forEach(ele => {
+    if(ele % 2 == 0){
+        return;
+    }
+    console.log(ele);
+})
