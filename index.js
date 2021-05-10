@@ -151,31 +151,35 @@ async function compareDependecies(foundDependency){
 // }
 
 function findDependencies(content){
-    let levelDependencies = {}; 
-    const lines = content.split('\n');
-
-    for(let index = 0; index <= lines.length; index++){
-        if(lines[index] && lines[index].indexOf(' - ') > 0){
-            let level = lines[index].substring(0, lines[index].indexOf(' - '));
-            levelDependencies[level] = [];
-            index++;            
-            while(lines[index] != ''){
-                if(lines[index].indexOf('-') < 0){
-                    delete levelDependencies[level];
-                }else{
-                    levelDependencies[level].push(lines[index]);                    
-                }
-                index++;                
-            }            
-        }
-    }
-        
     let repoDependencies = {};
-    Object.entries(levelDependencies).forEach(([key, value]) => {        
-        repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
-    })    
+    try{
+        let levelDependencies = {}; 
+        const lines = content.split('\n');
 
-    // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+        for(let index = 0; index <= lines.length; index++){        
+            if(lines[index] && lines[index].indexOf(' - ') > 0){
+                let level = lines[index].substring(0, lines[index].indexOf(' - '));
+                levelDependencies[level] = [];
+                index++;            
+                while(lines[index] != ''){
+                    if(lines[index].indexOf('-') < 0){
+                        delete levelDependencies[level];
+                    }else{
+                        levelDependencies[level].push(lines[index]);                    
+                    }
+                    index++;                
+                }            
+            }
+        }
+                    
+        Object.entries(levelDependencies).forEach(([key, value]) => {        
+            repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
+        })    
+        console.log('end1');
+        // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+    }catch(e){
+        console.log(e.stack);
+    }
 
     return repoDependencies;
 }
