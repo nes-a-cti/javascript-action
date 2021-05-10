@@ -240,7 +240,7 @@ module.exports = JSON.parse('["ac","com.ac","edu.ac","gov.ac","net.ac","mil.ac",
 // }
 
 const START = `+--- `;
-const END = ` --- `;
+const END = `--- `;
 const UPGRADE = ' -> '
 
 
@@ -394,7 +394,7 @@ function getDependecyTree(ldependencies){
             dependency = dependency.substring(dependency.indexOf(START)+5);
         }        
         if(dependency.indexOf(END) >= 0){
-            dependency = dependency.substring(dependency.indexOf(END)+5);
+            dependency = dependency.substring(dependency.indexOf(END)+4);
         }
         if(isParent) parent = dependency;
         let depends = dependency.split(':');

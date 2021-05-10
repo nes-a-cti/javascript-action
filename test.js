@@ -1,5 +1,5 @@
 const START = `+--- `;
-const END = ` --- `;
+const END = `--- `;
 const UPGRADE = ' -> '
 
 
@@ -194,13 +194,13 @@ function findDependencies(){
             }            
         }
     }
-        
+
     let repoDependencies = {};
     Object.entries(levelDependencies).forEach(([key, value]) => {        
         repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
     })    
 
-    console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+    // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
 }
 
 function getDependecyTree(ldependencies){
@@ -208,6 +208,8 @@ function getDependecyTree(ldependencies){
     let parent = '';
     ldependencies.forEach(dependency => {        
         let isParent = false;
+        console.log(`dependency : ${dependency}`);
+        console.log(`1dependency : ${dependency.indexOf('--- ')}`);
         if(dependency.indexOf(START) == 0 || dependency.indexOf(END) == 0){            
             isParent = true;
         }        
@@ -215,7 +217,7 @@ function getDependecyTree(ldependencies){
             dependency = dependency.substring(dependency.indexOf(START)+5);
         }        
         if(dependency.indexOf(END) >= 0){
-            dependency = dependency.substring(dependency.indexOf(END)+5);
+            dependency = dependency.substring(dependency.indexOf(END)+4);
         }
         if(isParent) parent = dependency;
         let depends = dependency.split(':');
@@ -226,12 +228,13 @@ function getDependecyTree(ldependencies){
         }
         version = version.replace(' (*)', '');
         dependencies[key] = dependencies[key] || {parent  : []};
-        dependencies[key].version = version;                
+        dependencies[key].version = version;
+        if(isParent) console.log(`Parent : ${parent}`);
         if(!isParent && !dependencies[key].parent.includes(parent)) 
             dependencies[key].parent.push(parent);
     });
 
-    // console.log(`dependencies : ${JSON.stringify(dependencies)}`);
+    console.log(`dependencies : ${JSON.stringify(dependencies)}`);
 
     return dependencies;
 }
