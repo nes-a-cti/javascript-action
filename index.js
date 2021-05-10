@@ -58,13 +58,13 @@ async function run(){
         await exec(command, cmdArgs, cmdOpts);
         let data = cmdOut;                
         const foundDependency = findDependencies(data);
-        console.log(`2foundDependency : ${foundDependency.size}`);
-        // const conflictedDepencies = await compareDependecies(foundDependency);
-        // console.log('Test11 : ', conflictedDepencies.size);
+        console.log(`2foundDependency : ${foundDependency}`);
+        const conflictedDepencies = await compareDependecies(foundDependency);
+        console.log('Test11 : ', conflictedDepencies.size);
 
-        // if(conflictedDepencies.size > 0){
-        //     core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
-        // }        
+        if(conflictedDepencies.size > 0){
+            core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
+        }        
 
     }catch(error){
         core.setFailed(error.message);
@@ -90,25 +90,32 @@ async function readDependenciesFile(){
 
 function constructRequiredDependencies(data){
     const lines = data.split('\n');
-    let dependencies = new Set();
+    // let dependencies = new Set();
+    let dependencies = {};
     lines.forEach(element => {
-        dependencies.add(element);
+        // dependencies.add(element);
+        let depends = element.split(':');
+        dependencies[depends[0] + ":" + depends[1]].version = depends[2];
     });
-    console.log(`dependencies  size :${dependencies.size}`);
+    console.log(`dependencies  size :${JSON.stringify(dependencies)}`);
     return dependencies;
 }
 
 async function compareDependecies(foundDependency){    
         let requiredDependencies = await readDependenciesFile();
         return new Promise((resolve, reject) => {
-            console.log(`1foundDependency : ${foundDependency.size}`);
+            console.log(`1foundDependency : ${foundDependency.length}`);
             console.log(`requiredDependencies : ${requiredDependencies.size}`);
-            const conflictedDepencies = new Set();
-            Array.from(foundDependency).every(value => {
-                    if(!requiredDependencies.has(value)){
-                        conflictedDepencies.add(value);                        
-                    }                    
-            });        
+            // const conflictedDepencies = new Set();
+            // Array.from(foundDependency).every(value => {
+            //         if(!requiredDependencies.has(value)){
+            //             conflictedDepencies.add(value);                        
+            //         }                    
+            // });       
+            // Object.entries(foundDependency).forEach(([key, value]) => {        
+            //     let version = foundDependency[key].version;
+
+            // }); 
             resolve(conflictedDepencies);
         });                
 }
@@ -155,7 +162,7 @@ function findDependencies(content){
         repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
     })    
 
-    console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+    // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
 
     return repoDependencies;
 }
