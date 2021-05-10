@@ -328,9 +328,9 @@ function constructRequiredDependencies(data){
 async function compareDependecies(foundDependency){    
         let requiredDependencies = await readDependenciesFile();
         return new Promise((resolve, reject) => {
-            console.log(`1foundDependency : ${foundDependency.length}`);
-            console.log(`requiredDependencies : ${requiredDependencies.size}`);
-            // const conflictedDepencies = new Set();
+            console.log(`1foundDependency : ${JSON.stringify(foundDependency)}`);
+            console.log(`requiredDependencies : ${JSON.stringify(requiredDependencies)}`);
+            const conflictedDepencies = new Set();
             // Array.from(foundDependency).every(value => {
             //         if(!requiredDependencies.has(value)){
             //             conflictedDepencies.add(value);                        
