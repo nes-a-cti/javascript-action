@@ -436,7 +436,7 @@ function getDependecyTree(ldependencies){
         if(version.indexOf(UPGRADE) > 0){     
             version = version.replace(version.substring(0, version.indexOf(UPGRADE)+4), '');                                                
         }
-        version = version.replace(' (*)', '').replace(NOT_RESOLVED, '');        
+        version = version.replace(' (*)', '').replace(NOT_RESOLVED, '').trim();        
         dependencies[key] = dependencies[key] || {parent  : []};
         dependencies[key].version = version;                
         if(!isParent && !dependencies[key].parent.includes(parent)) 
