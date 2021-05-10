@@ -284,7 +284,7 @@ async function run(){
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency}`);
         const conflictedDepencies = await compareDependecies(foundDependency);
-        console.log('Test11 : ', conflictedDepencies.size);
+        console.log(`${conflictedDepencies.size} conflict found.`);
 
         if(conflictedDepencies.size > 0){
             core.setFailed(`Build Script conflict \n ${Array.from(conflictedDepencies).join('\n')} `);
