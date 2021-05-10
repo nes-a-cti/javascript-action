@@ -125,7 +125,7 @@ async function compareDependecies(foundDependency){
                         console.log(`foundDependency : ${JSON.stringify(foundDependency[key])}`);
                     } 
                     if(repVersion !== reqVersion){                        
-                        val += 'Requried = ' + key + ":" + reqVersion;
+                        val += 'Required = ' + key + ":" + reqVersion;
                         val += ', Found = ' + key + ":" + repVersion;
                         conflictedDepencies.add(val);
                     }
