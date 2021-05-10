@@ -17,6 +17,11 @@
 //   core.setFailed(error.message);
 // }
 
+const START = `+--- `;
+const END = ` --- `;
+const UPGRADE = ' -> '
+
+
 const {exec} = require('@actions/exec');
 const core = require('@actions/core');
 
