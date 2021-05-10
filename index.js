@@ -20,6 +20,7 @@
 const START = `+--- `;
 const END = `--- `;
 const UPGRADE = ' -> '
+const NOT_RESOLVED = '  (n)'
 
 
 const {exec} = require('@actions/exec');
@@ -64,7 +65,7 @@ async function run(){
         console.log('Test11 : ', conflictedDepencies.size);
 
         if(conflictedDepencies.size > 0){
-            core.setFailed(`Build Script conflict \n ${Array.from(conflictedDepencies).join(',')} `);
+            core.setFailed(`Build Script conflict \n ${Array.from(conflictedDepencies).join('\n')} `);
         }        
 
     }catch(error){
@@ -217,7 +218,7 @@ function getDependecyTree(ldependencies){
         if(version.indexOf(UPGRADE) > 0){     
             version = version.replace(version.substring(0, version.indexOf(UPGRADE)+4), '');                                                
         }
-        version = version.replace(' (*)', '');
+        version = version.replace(' (*)', '').replace(NOT_RESOLVED, '');        
         dependencies[key] = dependencies[key] || {parent  : []};
         dependencies[key].version = version;                
         if(!isParent && !dependencies[key].parent.includes(parent)) 
