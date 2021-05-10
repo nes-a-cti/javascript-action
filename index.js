@@ -43,7 +43,7 @@ requiredDependencies.add('org.hamcrest:hamcrest-core:1.3');
 
 async function run(){
     try{
-        
+        console.log('run start');
         let cmdOut = "";
         let cmdArgs = [];
         let command = './gradlew dependencies';
@@ -151,6 +151,7 @@ async function compareDependecies(foundDependency){
 // }
 
 function findDependencies(content){
+    console.log('findDependencies start');
     let repoDependencies = {};
     try{
         let levelDependencies = {}; 
@@ -185,6 +186,7 @@ function findDependencies(content){
 }
 
 function getDependecyTree(ldependencies){
+    console.log('getDependecyTree start')
     let dependencies = {};
     let parent = '';
     ldependencies.forEach(dependency => {        
