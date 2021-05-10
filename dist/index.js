@@ -279,10 +279,8 @@ async function run(){
         }
         cmdOpts.ignoreReturnCode = true;
         await exec(command, cmdArgs, cmdOpts);
-        let data = cmdOut;  
-        console.log('Test12132')
-        const foundDependency = findDependencies(data);
-        console.log(`2foundDependency : ${foundDependency}`);
+        let data = cmdOut;          
+        const foundDependency = findDependencies(data);        
         const conflictedDepencies = await compareDependecies(foundDependency);
         console.log(`${conflictedDepencies.size} conflict found.`);
 
@@ -383,7 +381,6 @@ async function compareDependecies(foundDependency){
 // }
 
 function findDependencies(content){
-    console.log('findDependencies start');
     let repoDependencies = {};
     try{
         let levelDependencies = {}; 
@@ -408,7 +405,7 @@ function findDependencies(content){
         Object.entries(levelDependencies).forEach(([key, value]) => {        
             repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
         })    
-        console.log('end1');
+        
         // console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
     }catch(e){
         console.log(e.stack);
@@ -417,8 +414,7 @@ function findDependencies(content){
     return repoDependencies;
 }
 
-function getDependecyTree(ldependencies){
-    console.log('getDependecyTree start')
+function getDependecyTree(ldependencies){    
     let dependencies = {};
     let parent = '';
     ldependencies.forEach(dependency => {
