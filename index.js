@@ -99,7 +99,7 @@ function constructRequiredDependencies(data){
         dependencies[key] = {};
         dependencies[key].version = depends[2];
     });
-    console.log(`dependencies  size :${JSON.stringify(dependencies)}`);
+    // console.log(`dependencies  size :${JSON.stringify(dependencies)}`);
     return dependencies;
 }
 
@@ -114,10 +114,20 @@ async function compareDependecies(foundDependency){
             //             conflictedDepencies.add(value);                        
             //         }                    
             // });       
-            // Object.entries(foundDependency).forEach(([key, value]) => {        
-            //     let version = foundDependency[key].version;
-
-            // }); 
+            Object.entries(foundDependency).forEach(([key, value]) => {
+                let val = '';        
+                if(requiredDependencies[key]){
+                    let repVersion = foundDependency[key].version;
+                    let reqVersion = readDependenciesFile[key].version;                    
+                    if(repVersion !== reqVersion){                        
+                        val += 'Requried = ' + key + ":" + reqVersion;
+                        val += ', Found = ' + key + ":" + repVersion;
+                    }
+                }else{
+                    val = 'Dependency not allowed : ' + key + ":" + repVersion;
+                 }
+                 conflictedDepencies.add(val);
+            }); 
             resolve(conflictedDepencies);
         });                
 }
