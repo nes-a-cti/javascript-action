@@ -260,21 +260,6 @@ requiredDependencies.add('org.hamcrest:hamcrest-core:1.3');
 
 async function run(){
     try{
-
-        // console.log('File Read Start');
-
-        // const fileStream = storage.bucket('ds_testclasses').file('dependencies.txt').createReadStream();
-
-        // console.log('Stream Created.');
-
-        // let buf = '';
-
-        // fileStream.on('data', data => {
-        //     console.log(data);
-        //     buf += data;
-        // }).on('end', () => {            
-        //     console.log(buf);
-        // });
         
         let cmdOut = "";
         let cmdArgs = [];
@@ -287,20 +272,16 @@ async function run(){
             }
         }
         cmdOpts.ignoreReturnCode = true;
-        let exitCode = await exec(command, cmdArgs, cmdOpts);
-        let data = cmdOut;        
-        // const content = await readDependenciesFile();
-        // console.log(`content :${content}`);
+        await exec(command, cmdArgs, cmdOpts);
+        let data = cmdOut;                
         const foundDependency = findDependencies(data);
         console.log(`2foundDependency : ${foundDependency.size}`);
-        const conflictedDepencies = await compareDependecies(foundDependency);
-        console.log('Test11 : ', conflictedDepencies.size);
+        // const conflictedDepencies = await compareDependecies(foundDependency);
+        // console.log('Test11 : ', conflictedDepencies.size);
 
-        if(conflictedDepencies.size > 0){
-            core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
-        }
-
-        console.log(`Exit Code : ${exitCode}`);
+        // if(conflictedDepencies.size > 0){
+        //     core.setFailed(`Build Script conflict ${Array.from(conflictedDepencies).join(',')} `);
+        // }        
 
     }catch(error){
         core.setFailed(error.message);
@@ -349,19 +330,82 @@ async function compareDependecies(foundDependency){
         });                
 }
 
-function findDependencies(content){
-    let lines = content.split('\n');
-    let dependencies = new Set();
+// function findDependencies(content){
+//     let lines = content.split('\n');
+//     let dependencies = new Set();
 
-    for(index in lines){
+//     for(index in lines){
         
-        if(lines[index].includes('--- ')){
-            let ln = lines[index].trim();
-            ln = ln.substring(ln.indexOf('--- ')+4);
-            ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
-            dependencies.add(ln);
+//         if(lines[index].includes('--- ')){
+//             let ln = lines[index].trim();
+//             ln = ln.substring(ln.indexOf('--- ')+4);
+//             ln = ln.includes(' ') ? ln.substring(0, ln.indexOf(' ')) : ln;
+//             dependencies.add(ln);
+//         }
+//     }    
+
+//     return dependencies;
+// }
+
+function findDependencies(content){
+    let levelDependencies = {}; 
+    const lines = content.split('\n');
+
+    for(let index = 0; index <= lines.length; index++){
+        if(lines[index] && lines[index].indexOf(' - ') > 0){
+            let level = lines[index].substring(0, lines[index].indexOf(' - '));
+            levelDependencies[level] = [];
+            index++;            
+            while(lines[index] != ''){
+                if(lines[index].indexOf('-') < 0){
+                    delete levelDependencies[level];
+                }else{
+                    levelDependencies[level].push(lines[index]);                    
+                }
+                index++;                
+            }            
         }
-    }    
+    }
+        
+    let repoDependencies = {};
+    Object.entries(levelDependencies).forEach(([key, value]) => {        
+        repoDependencies = {...repoDependencies, ...getDependecyTree(levelDependencies[key])};        
+    })    
+
+    console.log(`repoDependencies : ${JSON.stringify(repoDependencies)}`);
+
+    return repoDependencies;
+}
+
+function getDependecyTree(ldependencies){
+    let dependencies = {};
+    let parent = '';
+    ldependencies.forEach(dependency => {        
+        let isParent = false;
+        if(dependency.indexOf(START) == 0 || dependency.indexOf(END) == 0){            
+            isParent = true;
+        }        
+        if(dependency.indexOf(START) >= 0){
+            dependency = dependency.substring(dependency.indexOf(START)+5);
+        }        
+        if(dependency.indexOf(END) >= 0){
+            dependency = dependency.substring(dependency.indexOf(END)+5);
+        }
+        if(isParent) parent = dependency;
+        let depends = dependency.split(':');
+        let key = depends[0].replace(END.substring(1), '') + ":" + depends[1];
+        let version = depends[2];
+        if(version.indexOf(UPGRADE) > 0){     
+            version = version.replace(version.substring(0, version.indexOf(UPGRADE)+4), '');                                                
+        }
+        version = version.replace(' (*)', '');
+        dependencies[key] = dependencies[key] || {parent  : []};
+        dependencies[key].version = version;                
+        if(!isParent && !dependencies[key].parent.includes(parent)) 
+            dependencies[key].parent.push(parent);
+    });
+
+    // console.log(`dependencies : ${JSON.stringify(dependencies)}`);
 
     return dependencies;
 }
